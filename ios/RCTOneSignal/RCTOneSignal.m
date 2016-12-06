@@ -90,6 +90,9 @@ RCT_EXPORT_MODULE(RNOneSignal)
 // This isn't required, the iOS native SDK already hooks into this event.
 + (void)didReceiveRemoteNotification:(NSDictionary *)dictionary {
     // Keeping empty method around so developers do not get compile errors when updating versions.
+    NSLog(@"================================");
+    NSLog(@"In didReceiveRemoteNotification");
+    NSLog(@"================================");
 }
 
 - (void)handleRemoteNotificationReceived:(NSNotification *)notification {
@@ -106,20 +109,20 @@ RCT_EXPORT_METHOD(checkPermissions:(RCTResponseSenderBlock)callback)
         callback(@[@{@"alert": @NO, @"badge": @NO, @"sound": @NO}]);
         return;
     }
-    
+
     NSUInteger types = 0;
     if ([UIApplication instancesRespondToSelector:@selector(currentUserNotificationSettings)]) {
         types = [RCTSharedApplication() currentUserNotificationSettings].types;
     } else {
-        
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
-        
+
         types = [RCTSharedApplication() enabledRemoteNotificationTypes];
-        
+
 #endif
-        
+
     }
-    
+
     callback(@[@{
                    @"alert": @((types & UIUserNotificationTypeAlert) > 0),
                    @"badge": @((types & UIUserNotificationTypeBadge) > 0),
