@@ -35,6 +35,10 @@ static RCTBridge *curRCTBridge;
 
 OSNotificationOpenedResult* coldStartOSNotificationOpenedResult;
 
++ (void)didReceiveRemoteNotification:(NSDictionary *)dictionary {
+    [curRCTBridge.eventDispatcher sendAppEventWithName:@"OneSignal-remoteNotificationReceived" body:dictionary];
+}
+
 - (void)setBridge:(RCTBridge *)receivedBridge {
     _bridge = receivedBridge;
     curRCTBridge = receivedBridge;
